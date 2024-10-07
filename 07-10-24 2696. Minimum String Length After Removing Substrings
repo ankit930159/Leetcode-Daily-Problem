@@ -1,0 +1,28 @@
+class Solution {
+    public int minLength(String s) {
+        int writer = 0;
+        int reader = 0;
+        
+        // Traverse the string using reader pointer
+        while (reader < s.length()) {
+            s = s.substring(0, writer) + s.charAt(reader) + s.substring(writer+1);
+            
+            // If writer forms a valid pair (A-B or C-D), decrement writer pointer
+            if (writer > 0 && 
+                (s.charAt(writer) == 'B' || s.charAt(writer) == 'D') && 
+                s.charAt(writer) == (char)(s.charAt(writer - 1) + 1)) {
+                
+                writer--;
+            } else {
+                // Otherwise, increment writer pointer
+                writer++;
+            }
+            
+            // Increment reader pointer to process the next character
+            reader++;
+        }
+        
+        // The value of writer represents the minimum length of the string
+        return writer;
+    }
+}

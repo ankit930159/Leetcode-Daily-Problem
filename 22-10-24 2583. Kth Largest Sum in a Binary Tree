@@ -1,0 +1,36 @@
+import java.util.*;
+
+class TreeNode {
+    int val;
+    TreeNode left, right;
+    TreeNode(int val) {
+        this.val = val;
+        left = right = null;
+    }
+}
+
+class Solution {
+    public long kthLargestLevelSum(TreeNode root, int k) {
+        PriorityQueue<Long> minHeap = new PriorityQueue<>();
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+
+        // BFS
+        while (!queue.isEmpty()) {
+            long levelSum = 0;
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                TreeNode curr = queue.poll();
+                levelSum += curr.val;
+
+                if (curr.left != null) queue.add(curr.left);
+                if (curr.right != null) queue.add(curr.right);
+            }
+            minHeap.add(levelSum);
+            if (minHeap.size() > k) {
+                minHeap.poll();
+            }
+        }
+        return minHeap.size() < k ? -1 : minHeap.peek();
+    }
+}
